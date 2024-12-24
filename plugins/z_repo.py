@@ -9,7 +9,7 @@ from ChampuMusic.utils.database import add_served_chat, get_assistant
 
 
 start_txt = """**
-✪ 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 𝗖𝗵𝗮𝗺𝗽𝘂 𝗥𝗲𝗽𝗼𝘀 ✪
+✪ 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐍𝐘 𝐂𝐑𝐄𝐀𝐓𝐈𝐎𝐍'𝐒 𝐙𝐎𝐍𝐄 ✪
 
 ➲ ᴇᴀsʏ ʜᴇʀᴏᴋᴜ ᴅᴇᴘʟᴏʏᴍᴇɴᴛ ✰  
 ➲ ɴᴏ ʙᴀɴ ɪssᴜᴇs ✰  
@@ -29,20 +29,20 @@ async def start(_, msg):
           InlineKeyboardButton("ᴀᴅᴅ ᴍᴇ", url=f"https://t.me/{app.username}?startgroup=true")
         ],
         [
-          InlineKeyboardButton("ᴄʜᴧᴍᴘᴜ", url="https://t.me/TheChampu"),
-          InlineKeyboardButton("sʜɪᴠᴀɴsʜᴜ", url="https://t.me/TheShivanshu"),
+          InlineKeyboardButton("𝐍𝐚𝐧𝐝 𝐘𝐚𝐝𝐮𝐰𝐚𝐧𝐬𝐡𝐢", url="https://t.me/TMZEROO"),
+          InlineKeyboardButton("𝐒𝐮𝐩𝐩𝐨𝐫𝐭 𝐆𝐫𝐨𝐮𝐩", url="https://t.me/NYCreation_Chatzone"),
           ],
                [
-                InlineKeyboardButton("ᴏᴡɴᴇʀ", url="https://t.me/itsmeshivanshu"),
+                InlineKeyboardButton("ꜱᴇᴄᴏɴᴅ ʙᴏᴛ", url="https://t.me/Music4vcBot"),
 
 ],
 [
-              InlineKeyboardButton("ᴍᴜsɪᴄ", url=f"https://github.com/TheChampu/ChampuMusic"),
-              InlineKeyboardButton("sᴛʀɪɴɢ", url=f"https://github.com/TheChampu/ChampuString"),
+              InlineKeyboardButton("ᴍᴜsɪᴄ", url=f"https://t.me/Music_4_Sukoon"),
+              InlineKeyboardButton("ᴄʜᴀɴɴᴇʟ", url=f"https://t.me/CreativeYdv"),
               ],
               [
-              InlineKeyboardButton("ᴍᴀɴᴀɢᴍᴇɴᴛ", url=f"https://github.com/TheChampu/ChampuManagment"),
-InlineKeyboardButton("ᴄʜᴀᴛʙᴏᴛ", url=f"https://github.com/TheChampu/ChatBot"),
+              InlineKeyboardButton("ᴍᴀɴᴀɢᴍᴇɴᴛ", url=f"https://t.me/v2ddos"),
+InlineKeyboardButton("ʜᴇʟᴘ ʙᴏᴛ", url=f"https://t.me/NYCREATION_BOT"),
 ]]
     
     reply_markup = InlineKeyboardMarkup(buttons)
