@@ -142,22 +142,10 @@ async def help(client: Client, message: Message):
     filters.command("gali", prefixes=["/", "!", "%", ",", "", ".", "@", "#"])
     & filters.group
 )
-async def help_group(client: Client, message: Message):
-    try:
-        # Check if the user is an admin
-        member = await client.get_chat_member(message.chat.id, message.from_user.id)
-        if member.status in ["administrator", "creator"]:
-            await message.reply_text(text=random.choice(GALI))
-        else:
-            await message.reply_text("**𝐓𝐡𝐢𝐬 𝐜𝐨𝐦𝐦𝐚𝐧𝐝 𝐜𝐚𝐧 𝐨𝐧𝐥𝐲 𝐛𝐞 𝐮𝐬𝐞𝐝 𝐛𝐲 𝐠𝐫𝐨𝐮𝐩 𝐚𝐝𝐦𝐢𝐧𝐬.𝐢𝐟 𝐮 𝐰𝐚𝐧𝐭 𝐭𝐨 𝐮𝐬𝐞 /gali 𝐜𝐨𝐦𝐦𝐚𝐧𝐝. 𝐘𝐨𝐮 𝐜𝐚𝐧 𝐮𝐬𝐞 𝐢𝐧 𝐁𝐨𝐭 𝐃𝐌'𝐬**")
-    except ChatAdminRequired:
-        await message.reply_text("**𝐈 𝐧𝐞𝐞𝐝 𝐚𝐝𝐦𝐢𝐧 𝐩𝐞𝐫𝐦𝐢𝐬𝐬𝐢𝐨𝐧𝐬 𝐭𝐨 𝐜𝐡𝐞𝐜𝐤 𝐮𝐬𝐞𝐫 𝐬𝐭𝐚𝐭𝐮𝐬.**")
-    except Exception as e:
-        await message.reply_text(f"**𝐄𝐫𝐫𝐨𝐫:** {e}")
-
-@app.on_message(filters.command("gali", prefixes=["/", "!", "%", ",", "", ".", "@", "#"]) & filters.private)
-async def help_private(client: Client, message: Message):
-    await message.reply_text(text=random.choice(GALI))
+async def help(client: Client, message: Message):
+    await message.reply_text(
+        text=random.choice(GALI),
+    )
 
 __MODULE__ = "Gᴀʟɪ"
 __HELP__ = """
