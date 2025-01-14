@@ -3,8 +3,8 @@ import asyncio
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from config import AUTO_GCAST, AUTO_GCAST_MSG, LOG_GROUP_ID
-from VIPMUSIC import app
-from VIPMUSIC.utils.database import get_served_chats
+from ChampuMusic import app
+from ChampuMusic.utils.database import get_served_chats
 
 # Convert AUTO_GCAST to boolean based on "On" or "Off"
 AUTO_GCASTS = AUTO_GCAST.strip().lower() == "on"
