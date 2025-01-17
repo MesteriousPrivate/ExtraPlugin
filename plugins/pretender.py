@@ -151,6 +151,69 @@ async def set_mataa(_, message: Message):
     else:
         await message.reply("**ᴅᴇᴛᴇᴄᴛᴇᴅ ᴘʀᴇᴛᴇɴᴅᴇʀ ᴜsᴀɢᴇ:\n/pretender on|off**")
 
+@app.on_message(
+    filters.group & filters.command("checkuser") & ~filters.bot & ~filters.via_bot
+)
+async def check_user_details(_, message: Message):
+    if len(message.command) != 2:
+        return await message.reply("**Usage:** /checkuser <user_id>")
+
+    user_id = int(message.command[1])
+    chat_id = message.chat.id
+
+    # Fetch user data from the database
+    user_data = await get_userdata(chat_id, user_id)
+    if not user_data:
+        return await message.reply(f"**No data found for user ID:** `{user_id}`")
+
+    # Extract old data from the database
+    old_username = user_data.get("username", "N/A")
+    old_first_name = user_data.get("first_name", "N/A")
+    old_last_name = user_data.get("last_name", "N/A")
+
+    # Fetch current data from the message (if the user is in the group)
+    current_user = await app.get_users(user_id)
+    new_username = current_user.username or "N/A"
+    new_first_name = current_user.first_name or "N/A"
+    new_last_name = current_user.last_name or "N/A"
+
+    # Generate response message
+    msg = (
+        f"**User Details:**\n"
+        f"- **User ID:** `{user_id}`\n\n"
+        f"**Old Data:**\n"
+        f"- **Username:** @{old_username}\n"
+        f"- **First Name:** {old_first_name}\n"
+        f"- **Last Name:** {old_last_name}\n\n"
+        f"**Current Data:**\n"
+        f"- **Username:** @{new_username}\n"
+        f"- **First Name:** {new_first_name}\n"
+        f"- **Last Name:** {new_last_name}\n"
+    )
+
+    # Check for changes
+    changes = []
+    if old_username != new_username:
+        changes.append(
+            f"**Username changed:** @{old_username} → @{new_username}\n"
+        )
+    if old_first_name != new_first_name:
+        changes.append(
+            f"**First name changed:** {old_first_name} → {new_first_name}\n"
+        )
+    if old_last_name != new_last_name:
+        changes.append(
+            f"**Last name changed:** {old_last_name} → {new_last_name}\n"
+        )
+
+    # Add changes to the message
+    if changes:
+        msg += "\n**Changes Detected:**\n" + "".join(changes)
+    else:
+        msg += "\n**No changes detected.**"
+
+    await message.reply(msg)
+
 
 __MODULE__ = "Pʀᴇᴛᴇɴᴅᴇʀ"
 __HELP__ = """
