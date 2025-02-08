@@ -7,7 +7,7 @@ from ChampuMusic import app
 from ChampuMusic.utils.database import get_served_chats
 
 # Convert AUTO_GCAST to boolean based on "On" or "Off"
-AUTO_GCASTS = AUTO_GCAST.strip().lower() == "on"
+AUTO_GCASTS = AUTO_GCAST.strip().lower() == "off"
 
 START_IMG_URLS = "https://envs.sh/6FO.jpg"
 
