@@ -8,7 +8,7 @@ from ChampuMusic import app
 from ChampuMusic.utils.database import get_served_chats
 
 # Convert AUTO_GCAST to boolean
-AUTO_GCASTS = AUTO_GCAST.strip().lower() == "off"
+AUTO_GCASTS = AUTO_GCAST.strip().lower() == "on"
 
 PHOTO_URL = "https://envs.sh/6tX.jpg"
 CAPTION = "ᴛᴀᴘ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴs ᴛᴏ ᴄʜᴇᴄᴋ ᴏᴜʀ ᴀʟʟ ʙᴏᴛs 💜"
