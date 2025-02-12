@@ -82,42 +82,86 @@ import asyncio
 async def add_allbot(client, message):
     command_parts = message.text.split(" ")
     if len(command_parts) != 2:
-        await message.reply(
-            "**⚠️ ɪɴᴠᴀʟɪᴅ ᴄᴏᴍᴍᴀɴᴅ ғᴏʀᴍᴀᴛ. ᴘʟᴇᴀsᴇ ᴜsᴇ ʟɪᴋᴇ » `/gadd @WynkMusicRobot`**"
-        )
+        await message.reply("⚠️ **Invalid command format. Use** `/gadd @BotUsername`")
         return
 
     bot_username = command_parts[1]
     try:
-        userbot = await get_assistant(message.chat.id)
+        userbot = await get_assistant(message.chat.id)  # Assistant Userbot
         bot = await app.get_users(bot_username)
         app_id = bot.id
         done = 0
         failed = 0
-        lol = await message.reply("🔄 **ᴀᴅᴅɪɴɢ ɢɪᴠᴇɴ ʙᴏᴛ ɪɴ ᴀʟʟ ᴄʜᴀᴛs!**")
-        await userbot.send_message(bot_username, f"/start")
-        async for dialog in userbot.get_dialogs():
-            if dialog.chat.id == -1002321189618:
-                continue
-            try:
+        promoted = 0
 
-                await userbot.add_chat_members(dialog.chat.id, app_id)
-                done += 1
-                await lol.edit(
-                    f"**🔂 ᴀᴅᴅɪɴɢ {bot_username}**\n\n**➥ ᴀᴅᴅᴇᴅ ɪɴ {done} ᴄʜᴀᴛs ✅**\n**➥ ғᴀɪʟᴇᴅ ɪɴ {failed} ᴄʜᴀᴛs ❌**\n\n**➲ ᴀᴅᴅᴇᴅ ʙʏ»** @{userbot.username}"
-                )
+        lol = await message.reply("🔄 **Adding bot in all chats...**")
+        await userbot.send_message(bot_username, "/start")
+
+        async for dialog in userbot.get_dialogs():
+            chat_id = dialog.chat.id
+            
+            if chat_id == -1002321189618:  # Skip a specific group if needed
+                continue
+            
+            try:
+                chat_member = await userbot.get_chat_member(chat_id, userbot.me.id)
+                if chat_member.status in ["administrator", "creator"]:
+                    rights = chat_member.privileges
+
+                    # ✅ Pehle bot ko add karna
+                    await userbot.add_chat_members(chat_id, app_id)
+                    done += 1
+
+                    # ✅ Har possible tarike se bot ko admin promote karne ki koshish
+                    bot_member = await app.get_chat_member(chat_id, app_id)
+                    if bot_member.status in ["member"]:
+                        try:
+                            # Method 1: Assistant ke pass "Add Admins" right ho
+                            if rights.can_promote_members:
+                                await app.promote_chat_member(
+                                    chat_id, app_id,
+                                    can_manage_chat=True, can_delete_messages=True,
+                                    can_invite_users=True, can_change_info=True,
+                                    can_restrict_members=True, can_pin_messages=True,
+                                    can_manage_voice_chats=True
+                                )
+                                promoted += 1
+                        
+                        except Exception as e:
+                            pass  # Agar yeh method fail ho, to next try karega
+
+                        try:
+                            # Method 2: Assistant "change_info" ke bina promote kare
+                            if rights.can_promote_members:
+                                await app.promote_chat_member(
+                                    chat_id, app_id,
+                                    can_manage_chat=True, can_delete_messages=True,
+                                    can_invite_users=True, can_change_info=False,
+                                    can_restrict_members=True, can_pin_messages=True,
+                                    can_manage_voice_chats=True
+                                )
+                                promoted += 1
+                        
+                        except Exception as e:
+                            pass  # Agar yeh method bhi fail ho, to last step karega
+
+                else:
+                    # ✅ Agar assistant admin nahi hai, to bot ko sirf add karega
+                    await userbot.add_chat_members(chat_id, app_id)
+                    done += 1
+
+                await lol.edit(f"**➥ Added in {done} chats ✅**\n**➥ Failed in {failed} ❌**\n**➥ Promoted in {promoted} chats 🎉**")
+            
             except Exception as e:
                 failed += 1
-                await lol.edit(
-                    f"**🔂 ᴀᴅᴅɪɴɢ {bot_username}**\n\n**➥ ᴀᴅᴅᴇᴅ ɪɴ {done} ᴄʜᴀᴛs ✅**\n**➥ ғᴀɪʟᴇᴅ ɪɴ {failed} ᴄʜᴀᴛs ❌**\n\n**➲ ᴀᴅᴅɪɴɢ ʙʏ»** @{userbot.username}"
-                )
-            await asyncio.sleep(3)  # Adjust sleep time based on rate limits
+                await lol.edit(f"**➥ Added in {done} chats ✅**\n**➥ Failed in {failed} ❌**\n**➥ Promoted in {promoted} chats 🎉**")
 
-        await lol.edit(
-            f"**➻ {bot_username} ʙᴏᴛ ᴀᴅᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ🎉**\n\n**➥ ᴀᴅᴅᴇᴅ ɪɴ {done} ᴄʜᴀᴛs ✅**\n**➥ ғᴀɪʟᴇᴅ ɪɴ {failed} ᴄʜᴀᴛs ❌**\n\n**➲ ᴀᴅᴅᴇᴅ ʙʏ»** @{userbot.username}"
-        )
+            await asyncio.sleep(3)  # Avoid rate limits
+
+        await lol.edit(f"✅ **{bot_username} added successfully!**\n➥ **Added in {done} chats**\n➥ **Failed in {failed} chats**\n➥ **Promoted in {promoted} chats**")
+
     except Exception as e:
-        await message.reply(f"Error: {str(e)}")
+        await message.reply(f"❌ Error: {str(e)}")
 
 
 __MODULE__ = "Sᴏᴜʀᴄᴇ"
