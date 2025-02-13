@@ -138,14 +138,27 @@ async def help(client: Client, message: Message):
     )
 
 
-@app.on_message(
-    filters.command("gali", prefixes=["/", "!", "%", ",", "", ".", "@", "#"])
-    & filters.group
-)
-async def help(client: Client, message: Message):
-    await message.reply_text(
-        text=random.choice(GALI),
-    )
+@app.on_message(filters.command(["gali", "gali@ChampuMusicBot"]) & filters.group)
+async def gali_command(client, message):
+    user_id = message.from_user.id
+    chat_id = message.chat.id
+    member = await client.get_chat_member(chat_id, user_id)
+
+    # Check if user is admin
+    if member.status in ("administrator", "creator"):
+        if message.reply_to_message:
+            await message.reply(f"{message.reply_to_message.from_user.mention} {random.choice(GALI)}")
+        else:
+            await message.reply(random.choice(GALI))
+    else:
+        await message.reply("⛔ Ye command sirf admins ke liye hai!")
+        try:
+            await client.send_message(
+                user_id, 
+                "⚠️ Aap is command ka use nahi kar sakte. Agar aap is command ka istemal karna chahte hain, to mujhe DM me try karein."
+            )
+        except:
+            pass  # Agar user ke DM band hain toh ignore kar do
 
 __MODULE__ = "Gᴀʟɪ"
 __HELP__ = """
