@@ -144,21 +144,18 @@ async def gali_command(client, message):
     chat_id = message.chat.id
     member = await client.get_chat_member(chat_id, user_id)
 
+    # Stylish Bold Fonts
+    ADMIN_ONLY = "**𝗬𝗼𝘂 𝗰𝗮𝗻'𝘁 𝘂𝘀𝗲 𝘁𝗵𝗶𝘀 𝗰𝗼𝗺𝗺𝗮𝗻𝗱! 🚫 𝗢𝗻𝗹𝘆 𝗔𝗱𝗺𝗶𝗻𝘀 𝗮𝗿𝗲 𝗮𝗹𝗹𝗼𝘄𝗲𝗱.**"
+    TRY_IN_DM = "**💬 𝗜𝗳 𝘆𝗼𝘂 𝘄𝗮𝗻𝘁 𝘁𝗼 𝘂𝘀𝗲 𝘁𝗵𝗶𝘀 𝗰𝗼𝗺𝗺𝗮𝗻𝗱, 𝘁𝗿𝘆 𝗶𝗻 𝗺𝘆 𝗗𝗠!**"
+
     # Check if user is admin
-    if member.status in ("administrator", "creator"):
+    if member.status in ["administrator", "creator"]:
         if message.reply_to_message:
             await message.reply(f"{message.reply_to_message.from_user.mention} {random.choice(GALI)}")
         else:
             await message.reply(random.choice(GALI))
     else:
-        await message.reply("⛔ Ye command sirf admins ke liye hai!")
-        try:
-            await client.send_message(
-                user_id, 
-                "⚠️ Aap is command ka use nahi kar sakte. Agar aap is command ka istemal karna chahte hain, to mujhe DM me try karein."
-            )
-        except:
-            pass  # Agar user ke DM band hain toh ignore kar do
+        await message.reply(f"{ADMIN_ONLY}\n\n{TRY_IN_DM}")
 
 __MODULE__ = "Gᴀʟɪ"
 __HELP__ = """
