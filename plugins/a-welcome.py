@@ -126,20 +126,26 @@ async def auto_state(_, message):
 
 # Auto-welcome message for new members
 
-@app.on_chat_member_updated(filters.group, group=5) async def greet_new_members(_, member: ChatMemberUpdated): userbot = await get_assistant(member.chat.id) try: chat_id = member.chat.id welcome_status = await get_awelcome_status(chat_id) if welcome_status == "off": return
+@app.on_chat_member_updated(filters.group, group=5)
+async def greet_new_members(_, member: ChatMemberUpdated):
+    userbot = await get_assistant(member.chat.id)
+    try:
+        chat_id = member.chat.id
+        welcome_status = await get_awelcome_status(chat_id)
+        if welcome_status == "off":
+            return
 
-if not member.new_chat_member or not member.new_chat_member.user:
-        return  # Fix for NoneType error
+        if not member.new_chat_member or not member.new_chat_member.user:
+            return  # Fix for NoneType error
 
-    user = member.new_chat_member.user  # Ensure user is fetched properly
+        user = member.new_chat_member.user  # Ensure user is fetched properly
 
-    if member.new_chat_member and not member.old_chat_member:
-        user_name = user.first_name if user.first_name else "New User"
-        mention = f"[{user_name}](tg://user?id={user.id})"
-        welcome_text = f"{mention}, {random.choice(champu)}"
+        if member.new_chat_member and not member.old_chat_member:
+            user_name = user.first_name if user.first_name else "New User"
+            mention = f"[{user_name}](tg://user?id={user.id})"
+            welcome_text = f"{mention}, {random.choice(champu)}"
 
-        await userbot.send_message(chat_id, text=welcome_text, parse_mode="markdown")
-except Exception as e:
-    LOGGER.error(e)
-    return
-
+            await userbot.send_message(chat_id, text=welcome_text, parse_mode="markdown")
+    except Exception as e:
+        LOGGER.error(e)
+        return
