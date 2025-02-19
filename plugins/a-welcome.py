@@ -138,8 +138,7 @@ async def greet_new_members(_, member: ChatMemberUpdated):
 
         if member.new_chat_member and not member.old_chat_member:
             welcome_text = f"[{user.first_name}](tg://user?id={user.id}), {random.choice(champu)}"
-            await userbot.send_message(chat_id, text=welcome_text)
-
+await userbot.send_message(chat_id, text=welcome_text, parse_mode="markdown")
     except Exception as e:
         LOGGER.error(e)
         return
