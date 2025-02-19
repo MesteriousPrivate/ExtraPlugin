@@ -124,7 +124,7 @@ async def auto_state(_, message):
     else:
         await message.reply("**sᴏʀʀʏ ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴇɴᴀʙʟᴇ ᴀssɪsᴛᴀɴᴛ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ!**")
 
-Auto-welcome message for new members
+# Auto-welcome message for new members
 
 @app.on_chat_member_updated(filters.group, group=5) async def greet_new_members(_, member: ChatMemberUpdated): userbot = await get_assistant(member.chat.id) try: chat_id = member.chat.id welcome_status = await get_awelcome_status(chat_id) if welcome_status == "off": return
 
