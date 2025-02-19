@@ -125,7 +125,6 @@ async def auto_state(_, message):
         await message.reply("**sᴏʀʀʏ ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴇɴᴀʙʟᴇ ᴀssɪsᴛᴀɴᴛ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ!**")
 
 # Auto-welcome message for new members
-
 @app.on_chat_member_updated(filters.group, group=5)
 async def greet_new_members(_, member: ChatMemberUpdated):
     userbot = await get_assistant(member.chat.id)
@@ -135,17 +134,13 @@ async def greet_new_members(_, member: ChatMemberUpdated):
         if welcome_status == "off":
             return
 
-        if not member.new_chat_member or not member.new_chat_member.user:
-            return  # Fix for NoneType error
-
-        user = member.new_chat_member.user  # Ensure user is fetched properly
+        user = member.new_chat_member.user
 
         if member.new_chat_member and not member.old_chat_member:
-            user_name = user.first_name if user.first_name else "New User"
-            mention = f"[{user_name}](tg://user?id={user.id})"
-            welcome_text = f"{mention}, {random.choice(champu)}"
+            welcome_text = f"[{user.first_name}](tg://user?id={user.id}), {random.choice(champu)}"
+            await userbot.send_message(chat_id, text=welcome_text)
 
-            await userbot.send_message(chat_id, text=welcome_text, parse_mode="markdown")
     except Exception as e:
         LOGGER.error(e)
         return
+        
