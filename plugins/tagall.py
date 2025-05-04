@@ -87,8 +87,6 @@ async def tag_all_users(_, message):
             total_members += 1
         
         SPAM_CHATS.append(message.chat.id)
-        emoji_sequence = random.choice(EMOJI)
-        emoji_index = 0
         
         if replied:
             usernum = 0
@@ -102,6 +100,11 @@ async def tag_all_users(_, message):
                 
                 tagged_members += 1
                 usernum += 1
+                
+                # Get new emoji sequence for every 5 users
+                if usernum == 1:
+                    emoji_sequence = random.choice(EMOJI)
+                    emoji_index = 0
                 
                 # Use emoji for mention
                 emoji = emoji_sequence[emoji_index % len(emoji_sequence)]
@@ -136,6 +139,11 @@ async def tag_all_users(_, message):
                 tagged_members += 1
                 usernum += 1
                 
+                # Get new emoji sequence for every 5 users
+                if usernum == 1:
+                    emoji_sequence = random.choice(EMOJI)
+                    emoji_index = 0
+                
                 # Use emoji for mention
                 emoji = emoji_sequence[emoji_index % len(emoji_sequence)]
                 usertxt += f"[{emoji}](tg://user?id={m.user.id}) "
@@ -164,8 +172,6 @@ async def tag_all_users(_, message):
 
 Total members: {total_members}
 Tagged members: {tagged_members}
-
-Used emoji sequence: {emoji_sequence}
 """
         await app.send_message(message.chat.id, summary_msg)
         
@@ -212,8 +218,6 @@ async def tag_all_admins(_, message):
             total_admins += 1
         
         SPAM_CHATS.append(message.chat.id)
-        emoji_sequence = random.choice(EMOJI)
-        emoji_index = 0
         
         if replied:
             adminnum = 0
@@ -229,6 +233,11 @@ async def tag_all_admins(_, message):
                 
                 tagged_admins += 1
                 adminnum += 1
+                
+                # Get new emoji sequence for every 5 admins
+                if adminnum == 1:
+                    emoji_sequence = random.choice(EMOJI)
+                    emoji_index = 0
                 
                 # Use emoji for mention
                 emoji = emoji_sequence[emoji_index % len(emoji_sequence)]
@@ -265,6 +274,11 @@ async def tag_all_admins(_, message):
                 tagged_admins += 1
                 adminnum += 1
                 
+                # Get new emoji sequence for every 5 admins
+                if adminnum == 1:
+                    emoji_sequence = random.choice(EMOJI)
+                    emoji_index = 0
+                
                 # Use emoji for mention
                 emoji = emoji_sequence[emoji_index % len(emoji_sequence)]
                 admintxt += f"[{emoji}](tg://user?id={m.user.id}) "
@@ -293,8 +307,6 @@ async def tag_all_admins(_, message):
 
 Total admins: {total_admins}
 Tagged admins: {tagged_admins}
-
-Used emoji sequence: {emoji_sequence}
 """
         await app.send_message(message.chat.id, summary_msg)
         
@@ -338,9 +350,9 @@ async def cancelcmd(_, message):
 
 MODULE = "Tᴀɢᴀʟʟ"
 HELP = """
-@all or /all | /tagall or @tagall | /mentionall or @mentionall [text] or [reply to any message] - Tag all users in your group with random emojis
+@all or /all | /tagall or @tagall | /mentionall or @mentionall [text] or [reply to any message] - Tag all users in your group with random emojis (changes every 5 users)
 
-/admintag or @admintag | /adminmention or @adminmention | /admins or @admins [text] or [reply to any message] - Tag all admins in your group with random emojis
+/admintag or @admintag | /adminmention or @adminmention | /admins or @admins [text] or [reply to any message] - Tag all admins in your group with random emojis (changes every 5 users)
 
 /stopmention or @stopmention | /cancel or @cancel | /offmention or @offmention | /mentionoff or @mentionoff | /cancelall or @cancelall - Stop any running tagging process
 
@@ -348,6 +360,6 @@ Note:
 1. These commands can only be used by admins
 2. The bot and assistant must be admins in your group
 3. Users will be tagged with random emojis that link to their profiles
-4. After completion, you'll get a summary with counts and used emoji sequence
-5. Tags 5 users at a time to avoid flooding
+4. After completion, you'll get a summary with counts
+5. Tags 5 users at a time with unique emoji sequence for each batch
 """
