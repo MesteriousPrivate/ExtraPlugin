@@ -1,7 +1,7 @@
 from pyrogram import Client, filters, enums
 from ChampuMusic import app
 import asyncio
-from ChampuMusic import config
+import config
 from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery
 from datetime import datetime
