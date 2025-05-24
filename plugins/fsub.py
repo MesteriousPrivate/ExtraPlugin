@@ -20,8 +20,9 @@ async def set_forcesub(client: Client, message: Message):
     user_id = message.from_user.id
 
     member = await client.get_chat_member(chat_id, user_id)
-    if not (member.status == "creator" or user_id in SUDOERS):
-        return await message.reply_text("**ᴏɴʟʏ ɢʀᴏᴜᴘ ᴏᴡɴᴇʀs ᴏʀ sᴜᴅᴏᴇʀs ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.**")
+    # Allow sudoers, group owner, and group admins
+    if not (member.status in ["owner", "administrator"] or user_id in SUDOERS):
+        return await message.reply_text("**ᴏɴʟʏ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs ᴏʀ sᴜᴅᴏᴇʀs ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.**")
 
     if len(message.command) == 2 and message.command[1].lower() in ["off", "disable"]:
         forcesub_collection.delete_one({"chat_id": chat_id})
