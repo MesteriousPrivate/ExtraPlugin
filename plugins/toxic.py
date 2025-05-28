@@ -32,7 +32,7 @@ async def moderation(_, message: Message):
             try:
                 await message.delete()
                 await message.reply_text(
-                    f"🚫 Message deleted due to offensive language. Please keep it clean.",
+                     f"🚫 {message.from_user.mention}, Message deleted due to offensive language. Please keep it clean.",
                     quote=True
                 )
             except Exception:
