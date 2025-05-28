@@ -4,7 +4,7 @@ from pyrogram.types import Message
 from ChampuMusic import app
 
 # Configure Gemini API
-genai.configure(api_key="YOUR_API_KEY")  # Replace with your real key
+genai.configure(api_key="AIzaSyA_a_X6a8vTKjiISMtLDkJ-azfjZg9pIqg")  # Replace with your real key
 
 model = genai.GenerativeModel("gemini-1.5-flash")
 
