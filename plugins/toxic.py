@@ -3,22 +3,28 @@ from pyrogram import filters
 from pyrogram.types import Message
 from ChampuMusic import app
 
-genai.configure(api_key="AIzaSyA_a_X6a8vTKjiISMtLDkJ-azfjZg9pIqg")
+# Configure Gemini API
+genai.configure(api_key="YOUR_API_KEY")  # Replace with your real key
+
 model = genai.GenerativeModel("gemini-1.5-flash")
 
+# Toxic message checker
 async def is_toxic(text: str) -> bool:
     prompt = (
-        f"Kya ye message offensive ya gali type hai? (Hindi/English mix bhi ho sakta hai ya bich ne *,# ka bhi use kar sakta hai):\n\n"
-        f"\"{text}\"\n\n"
-        "Sirf 'yes' ya 'no' mein jawab do."
+        "Check if the following message contains a clearly abusive or vulgar word "
+        "(Hindi or English), even if the word is written using symbols like *, #, @, $ etc. "
+        "Ignore tone, sarcasm, jokes, or anger. Only reply 'yes' if the message has a real gaali. "
+        "If not, reply 'no'.\n\n"
+        f"Message: \"{text}\""
     )
     try:
         response = await model.generate_content_async(prompt)
-        reply = response.text.strip().lower()
-        return "yes" in reply
+        result = response.text.strip().lower()
+        return "yes" in result
     except Exception:
         return False
 
+# Handler to check and delete message
 @app.on_message(filters.text & filters.group, group=9)
 async def moderation(_, message: Message):
     if message.from_user and not message.from_user.is_bot:
@@ -26,7 +32,8 @@ async def moderation(_, message: Message):
             try:
                 await message.delete()
                 await message.reply_text(
-                    f"⚠️ <b>{message.from_user.mention}</b>, your message was removed for inappropriate language."
+                    f"🚫 Message deleted due to offensive language. Please keep it clean.",
+                    quote=True
                 )
-            except:
+            except Exception:
                 pass
