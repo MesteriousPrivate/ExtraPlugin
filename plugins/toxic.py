@@ -3,10 +3,7 @@ from pyrogram import filters
 from pyrogram.types import Message
 from ChampuMusic import app
 
-# Gemini API config
 genai.configure(api_key="AIzaSyA_a_X6a8vTKjiISMtLDkJ-azfjZg9pIqg")
-
-# Working model (as of now)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 async def is_toxic(text: str) -> bool:
@@ -17,9 +14,9 @@ async def is_toxic(text: str) -> bool:
     )
     try:
         response = await model.generate_content_async(prompt)
-        return "yes" in response.text.strip().lower()
-    except Exception as e:
-        print(f"[Gemini Error] {e}")
+        reply = response.text.strip().lower()
+        return "yes" in reply
+    except Exception:
         return False
 
 @app.on_message(filters.text & filters.group, group=9)
@@ -29,8 +26,7 @@ async def moderation(_, message: Message):
             try:
                 await message.delete()
                 await message.reply_text(
-                    f"🚫 <b>{message.from_user.mention}</b>, abusive message delete kiya gaya hai.\n\n"
-                    "⚠️ Gali ya disrespect allowed nahi.\n<i>~ ShrutiBots</i>"
+                    f"⚠️ <b>{message.from_user.mention}</b>, your message was removed for inappropriate language."
                 )
-            except Exception as e:
-                print(f"❌ Error: {e}")
+            except:
+                pass
