@@ -8,7 +8,7 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 
 async def is_toxic(text: str) -> bool:
     prompt = (
-        f"Kya ye message offensive ya gali type hai? (Hindi/English mix bhi ho sakta hai):\n\n"
+        f"Kya ye message offensive ya gali type hai? (Hindi/English mix bhi ho sakta hai ya bich ne *,# ka bhi use kar sakta hai):\n\n"
         f"\"{text}\"\n\n"
         "Sirf 'yes' ya 'no' mein jawab do."
     )
