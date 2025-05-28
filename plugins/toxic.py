@@ -3,39 +3,34 @@ from pyrogram import filters
 from pyrogram.types import Message
 from ChampuMusic import app
 
-# Gemini API Key setup
+# Gemini API config
 genai.configure(api_key="AIzaSyA_a_X6a8vTKjiISMtLDkJ-azfjZg9pIqg")
-model = genai.GenerativeModel("gemini-pro")
 
-# Gemini-based toxicity detector
-async def is_toxic_message(text: str) -> bool:
+# Working model (as of now)
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+async def is_toxic(text: str) -> bool:
     prompt = (
-        "Kya ye message offensive ya abusive language ka use karta hai? "
-        "Hindi ya English galiyo ka bhi dhyan rakho. Sirf 'yes' ya 'no' mein jawab do.\n\n"
-        f"Message: {text}"
+        f"Kya ye message offensive ya gali type hai? (Hindi/English mix bhi ho sakta hai):\n\n"
+        f"\"{text}\"\n\n"
+        "Sirf 'yes' ya 'no' mein jawab do."
     )
     try:
         response = await model.generate_content_async(prompt)
-        answer = response.text.strip().lower()
-        return "yes" in answer
+        return "yes" in response.text.strip().lower()
     except Exception as e:
-        print(f"[Gemini] Error: {e}")
+        print(f"[Gemini Error] {e}")
         return False
 
-# Pyrogram handler for group messages
 @app.on_message(filters.text & filters.group, group=9)
-async def gemini_moderation(_, message: Message):
+async def moderation(_, message: Message):
     if message.from_user and not message.from_user.is_bot:
-        if await is_toxic_message(message.text):
+        if await is_toxic(message.text):
             try:
                 await message.delete()
                 await message.reply_text(
-                    f"🚫 <b>{message.from_user.mention}</b>, aapke message mein "
-                    "offensive language detect hui hai.\n\n"
-                    "⚠️ <b>Gali ya bad words ka use na karein.</b>\n"
-                    "Warna admins action lene par majboor ho jayenge.\n\n"
-                    "<i>~ ChampuMusic Moderation System</i>",
-                    quote=True
+                    f"🚫 <b>{message.from_user.mention}</b>, abusive message delete kiya gaya hai.\n\n"
+                    "⚠️ Gali ya disrespect allowed nahi.\n<i>~ ShrutiBots</i>"
                 )
             except Exception as e:
-                print(f"Failed to delete toxic message: {e}")
+                print(f"❌ Error: {e}")
